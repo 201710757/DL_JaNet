@@ -1,2 +1,3 @@
-# DL_JaNet
-# 심층학습 프로젝트 파일을 공유하는 곳입니다.
+# face_recognition
+
+### img(input) - MTCNN(find face pos) - FaceNet(embedding) - SVM(X) - name(output)
