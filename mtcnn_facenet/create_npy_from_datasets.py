@@ -9,13 +9,6 @@ print('Running on device: {}'.format(device))
 mtcnn = MTCNN(device=device)
 model = InceptionResnetV1(pretrained='vggface2').eval()
 
-# img = Image.open('sample.jpg')
-# img_cropped = mtcnn(img)
-
-model.classify = True
-# img_probs = model(img_cropped.unsqueeze(0))
-# print(img_probs)
-
 def get_embedding(filename):
     img = Image.open(filename)
     img_cropped = mtcnn(img)
@@ -46,15 +39,11 @@ for i in folder_list:
         embs.append(get_embedding(_path+"/"+_file))
         labels.append(i)
 
+        
 e = np.array(embs)
-print(e[0])
+# print(e[0])
 np.save('emb.npy', e)
 l = np.array(labels)
-print(l[0])
+# print(l[0])
 np.save('label.npy', l)
 
-
-
-
-import sys
-sys.exit(0)

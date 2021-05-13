@@ -5,7 +5,7 @@ from sklearn.svm import SVC
 from sklearn import metrics
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import Normalizer
-
+import joblib
 
 embs = np.load('./emb.npy', allow_pickle=True)
 labels = np.load('./label.npy', allow_pickle=True)
@@ -49,8 +49,4 @@ train_and_evaluate(svc_1,X_train,X_test,Y_train,Y_test)
 
 joblib.dump(svc_1, 'svc_face.pkl')
 
-# x = embData
-# #y = labelData
-svc = joblib.load('svc_face.pkl')
-# svc.predict(x)
 

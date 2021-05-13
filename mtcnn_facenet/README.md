@@ -1,3 +1,3 @@
 # face_recognition
 
-## MTCNN - FACENET(VGG)
+### create_npy_from_datasets.py -> make npy files from datasets
