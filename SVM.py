@@ -30,9 +30,14 @@ out_encoder.fit(Y_train_)
 Y_train = out_encoder.transform(Y_train_)
 Y_test = out_encoder.transform(Y_test_)
 
+
 labels = np.zeros(10000)
+labels = list(labels)
 for i in range(len(Y_train)):
-    labels[Y_train[i]] = Y_train_[i]
+    print("Y_train : {} / Y_Train_ : {}".format(Y_train[i], Y_train_[i]))
+    ####################################################################
+    labels[int(Y_train[i])] = \
+                    str(Y_train_[i])
 for i in range(len(Y_test)):
     labels[Y_test[i]] = Y_test_[i]
 
@@ -55,5 +60,5 @@ def train_and_evaluate(clf,X_train,X_test,Y_train,Y_test):
 train_and_evaluate(svc_1,X_train,X_test,Y_train,Y_test)
 
 joblib.dump(svc_1, 'svc_face.pkl')
-np.save("label_pair", labels)
+np.save("label_pair", np.array(labels))
 
