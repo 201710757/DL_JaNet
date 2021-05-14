@@ -20,9 +20,10 @@ class GetEmb:
 
     def get_embeddings(self, img):
         img_cropped = self.mtcnn(img)
-
+        #print("cr : ",img_cropped.shape)
         self.model.classify = True
         embs = self.model(img_cropped.unsqueeze(0))
+        #print("emb : ", embs.shape)
         return embs[0].detach().numpy()
 
 
