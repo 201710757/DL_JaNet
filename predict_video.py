@@ -46,7 +46,8 @@ while cv2.waitKey(33) != ord('q'):
         _find(im_pil)
 
         cv2.imshow("face", frame)
-    except:
+    except Exception as e:
+        print("Erro : ", e)
         pass
 capture.release()
 cv2.destroyAllWindows()
