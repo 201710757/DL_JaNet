@@ -7,34 +7,32 @@ from mtcnn_facenet.custom_mtcnn import GetEmb
 import cv2
 
 labels = np.load('label_pair.npy')
-credit = np.zeros(len(labels))
-
 
 getEmbs = GetEmb()
 svc = joblib.load('svc_face.pkl')
-
-def softmax(a) :
-    exp_a = np.exp(a)
-    sum_exp_a = np.sum(exp_a)
-    y = exp_a / sum_exp_a
-    
-    return y
 
 def _find(frame):
 
     x = getEmbs.get_embeddings(frame)
 
     pred_label = svc.predict([x])
-    
-    credit[pred_label] += 1
 
     return str(labels[pred_label])
     # print("PREDICT : ", labels[pred_label])
 
-capture = cv2.VideoCapture(0)
+videoFile = './test.mp4'
+capture = cv2.VideoCapture(videoFile)
+
+output_name = './res.avi'
+fourcc = cv2.VideoWriter_fourcc(*'DIVX')
+out = cv2.VideoWriter(output_name, fourcc, 25.0, (640,480))
 
 while cv2.waitKey(33) != ord('q'):
     ret, frame = capture.read()
+    if ret:
+        pass
+    else:
+        break
     cap = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     img = frame
     frame = Image.fromarray(cap)
@@ -69,6 +67,8 @@ while cv2.waitKey(33) != ord('q'):
     n_img = np.array(frame_draw)
 
     cv2.imshow("VideoFrame", cv2.cvtColor(np.array(frame_draw), cv2.COLOR_RGB2BGR))
-print("{}. detected - 5000원 결제되었습니다.".format(labels[np.argmax(softmax(credit))])
+    out.write(cv2.cvtColor(np.array(frame_draw), cv2.COLOR_RGB2BGR))
+
 capture.release()
+out.release()
 cv2.destroyAllWindows()
