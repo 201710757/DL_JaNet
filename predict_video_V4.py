@@ -7,15 +7,26 @@ from mtcnn_facenet.custom_mtcnn import GetEmb
 import cv2
 
 labels = np.load('label_pair.npy')
+credit = np.zeros(len(labels))
+
 
 getEmbs = GetEmb()
 svc = joblib.load('svc_face.pkl')
+
+def softmax(a) :
+    exp_a = np.exp(a)
+    sum_exp_a = np.sum(exp_a)
+    y = exp_a / sum_exp_a
+    
+    return y
 
 def _find(frame):
 
     x = getEmbs.get_embeddings(frame)
 
     pred_label = svc.predict([x])
+    
+    credit[pred_label] += 1
 
     return str(labels[pred_label])
     # print("PREDICT : ", labels[pred_label])
@@ -58,6 +69,6 @@ while cv2.waitKey(33) != ord('q'):
     n_img = np.array(frame_draw)
 
     cv2.imshow("VideoFrame", cv2.cvtColor(np.array(frame_draw), cv2.COLOR_RGB2BGR))
-
+print("{}. detected - 5000원 결제되었습니다.".format(labels[np.argmax(softmax(credit))])
 capture.release()
 cv2.destroyAllWindows()
