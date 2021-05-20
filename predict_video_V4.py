@@ -69,6 +69,6 @@ while cv2.waitKey(33) != ord('q'):
     n_img = np.array(frame_draw)
 
     cv2.imshow("VideoFrame", cv2.cvtColor(np.array(frame_draw), cv2.COLOR_RGB2BGR))
-print("{}. detected - 5000원 결제되었습니다.".format(labels[np.argmax(softmax(credit))])
+#print("{}. detected - 5000원 결제되었습니다.".format(labels[np.argmax(softmax(credit))]))
 capture.release()
 cv2.destroyAllWindows()

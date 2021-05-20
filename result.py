@@ -20,13 +20,15 @@ def _find(frame):
     return str(labels[pred_label])
     # print("PREDICT : ", labels[pred_label])
 
-videoFile = './test.mp4'
+videoFile = './testset.mp4'
 capture = cv2.VideoCapture(videoFile)
+#capture = cv2.VideoCapture(0)
 
-output_name = './res.avi'
+output_name = './res.mp4'
 fourcc = cv2.VideoWriter_fourcc(*'DIVX')
-out = cv2.VideoWriter(output_name, fourcc, 25.0, (640,480))
+out = cv2.VideoWriter(output_name, fourcc, 20.0, (int(capture.get(3)), int(capture.get(4))))
 
+font = ImageFont.truetype("/usr/share/fonts/truetype/nanum/NanumGothic.ttf", 20)
 while cv2.waitKey(33) != ord('q'):
     ret, frame = capture.read()
     if ret:
@@ -51,20 +53,24 @@ while cv2.waitKey(33) != ord('q'):
                 img_ = cv2.cvtColor(img_, cv2.COLOR_BGR2RGB)
                 im_pil = Image.fromarray(img_)
                 lb = _find(im_pil)
+
+                draw.text((tmp[0],tmp[1]-25), str(lb), font=font, fill=(255,255,255), )
+                draw.rectangle(tmp, outline=(255, 0, 0), width=6)
+                
                 print("PREDICT : ", lb)
             except Exception as e:
                 #print("Erro : ", e)
                 pass
 
 
-            font = ImageFont.truetype("/usr/share/fonts/truetype/nanum/NanumGothic.ttf", 20)
-            draw.text((tmp[0],tmp[1]-25), str(lb), font=font, fill=(255,255,255), )
-            draw.rectangle(tmp, outline=(255, 0, 0), width=6)
+#            font = ImageFont.truetype("/usr/share/fonts/truetype/nanum/NanumGothic.ttf", 20)
+#            draw.text((tmp[0],tmp[1]-25), str(lb), font=font, fill=(255,255,255), )
+#            draw.rectangle(tmp, outline=(255, 0, 0), width=6)
     except Exception as e:
         print(e)
         pass
 
-    n_img = np.array(frame_draw)
+#    n_img = np.array(frame_draw)
 
     cv2.imshow("VideoFrame", cv2.cvtColor(np.array(frame_draw), cv2.COLOR_RGB2BGR))
     out.write(cv2.cvtColor(np.array(frame_draw), cv2.COLOR_RGB2BGR))
